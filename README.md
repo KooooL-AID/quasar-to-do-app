@@ -39,7 +39,10 @@ Note: The API dont change anything the data will be back after refreshing your b
 
 ## Images
 
-![Main Screenshot](/public/images/image.png)
+![Main Screenshot](./public/images/image.png)
+![Task Added](./public/images/images2.png)
+![Task Editing](./public/images/images3.png)
+![Task Deleted](./public/images/images4.png)
 
 ## Developed by:
 
