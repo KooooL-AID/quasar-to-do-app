@@ -37,13 +37,9 @@ https://jsonplaceholder.typicode.com/todos
 
 Note: The API dont change anything the data will be back after refreshing your browser, its for front end testing only
 
-## Testing with Postman
+## Images
 
-Action -> Method -> Endpoint
-Get -> Tasks -> GET https://jsonplaceholder.typicode.com/todos
-Add -> Task -> POST https://jsonplaceholder.typicode.com/todos
-Update -> PUT https://jsonplaceholder.typicode.com/todos/1
-Delete -> DELETE https://jsonplaceholder.typicode.com/todos/1
+![Main Screenshot](.public/images/image.png)
 
 ## Developed by:
 
