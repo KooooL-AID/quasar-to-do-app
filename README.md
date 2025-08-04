@@ -39,7 +39,7 @@ Note: The API dont change anything the data will be back after refreshing your b
 
 ## Images
 
-![Main Screenshot](.public/images/image.png)
+![Main Screenshot](/public/images/image.png)
 
 ## Developed by:
 
