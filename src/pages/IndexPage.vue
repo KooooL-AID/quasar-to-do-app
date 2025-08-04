@@ -17,6 +17,7 @@
           <template v-if="task.isEditing">
             <q-input filled v-model="task.title" class="col" />
             <q-btn color="positive" icon="check" @click="saveTask(task)" />
+            <q-btn flat color="grey" icon="close" @click="cancelEdit(task)" />
           </template>
           <template v-else>
             <div class="col">{{ task.title }}</div>
@@ -31,13 +32,14 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { Notify } from 'quasar'
 import axios from 'axios'
 
 const API = 'https://jsonplaceholder.typicode.com/todos'
 const tasks = ref([])
 const newTask = ref('')
 
-// Load initial tasks
+// Load tasks on mount
 const fetchTasks = async () => {
   try {
     const response = await axios.get(`${API}?_limit=5`)
@@ -45,8 +47,8 @@ const fetchTasks = async () => {
       ...task,
       isEditing: false,
     }))
-  } catch (error) {
-    console.error('Failed to fetch tasks:', error)
+  } catch (err) {
+    console.error('Fetch error:', err)
   }
 }
 
@@ -55,35 +57,90 @@ const addTask = async () => {
   if (!newTask.value.trim()) return
 
   try {
-    const response = await axios.post(API, {
+    await axios.post(API, {
       title: newTask.value,
       completed: false,
     })
+
     const newTaskObj = {
-      ...response.data,
+      id: Date.now(), // temporary ID
+      title: newTask.value,
+      completed: false,
       isEditing: false,
-      // Ensure we have a unique ID for new tasks
-      id: Date.now(),
     }
-    tasks.value.unshift(newTaskObj)
+
+    tasks.value.unshift(newTaskObj) 
     newTask.value = ''
+
+    Notify.create({
+      type: 'positive',
+      message: 'Task added!',
+    })
   } catch (error) {
-    console.error('Add task failed:', error)
+    console.error('Add failed:', error)
+    Notify.create({
+      type: 'negative',
+      message: 'Failed to add task',
+    })
   }
 }
 
-// Start editing task
+// Start editing
 const startEditing = (task) => {
+  task.originalTitle = task.title
   task.isEditing = true
 }
 
-// Save task changes
+// Cancel editing
+const cancelEdit = (task) => {
+  task.title = task.originalTitle
+  task.isEditing = false
+}
+
+// Save task
 const saveTask = async (task) => {
-  try {
-    await axios.put(`${API}/${task.id}`, task)
+  if (!task.title.trim()) {
+    task.title = task.originalTitle
     task.isEditing = false
+    return
+  }
+
+  try {
+    // For tasks from the initial fetch (have real API IDs)
+    if (task.id <= 200) {  // JSONPlaceholder has 200 default todos
+      await axios.put(`${API}/${task.id}`, {
+        id: task.id,
+        title: task.title,
+        completed: task.completed
+      })
+    }
+    // Always update local state regardless of API success
+    const taskIndex = tasks.value.findIndex(t => t.id === task.id)
+    if (taskIndex !== -1) {
+      tasks.value[taskIndex] = {
+        ...task,
+        title: task.title,
+        isEditing: false,
+        originalTitle: task.title
+      }
+    }
+
+    Notify.create({
+      type: 'positive',
+      message: 'Task updated successfully!'
+    })
   } catch (error) {
     console.error('Update failed:', error)
+    // Only revert changes if it's a non-500 error
+    if (error.response?.status !== 500) {
+      task.title = task.originalTitle
+      Notify.create({
+        type: 'negative',
+        message: 'Failed to update task'
+      })
+    }
+  } finally {
+    task.isEditing = false
   }
 }
 
@@ -92,8 +149,16 @@ const deleteTask = async (id) => {
   try {
     await axios.delete(`${API}/${id}`)
     tasks.value = tasks.value.filter((t) => t.id !== id)
+    Notify.create({
+      type: 'info',
+      message: 'Task deleted.',
+    })
   } catch (error) {
     console.error('Delete failed:', error)
+    Notify.create({
+      type: 'negative',
+      message: 'Failed to delete task',
+    })
   }
 }
 
