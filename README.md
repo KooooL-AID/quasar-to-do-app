@@ -41,6 +41,7 @@ Note: The API dont change anything the data will be back after refreshing your b
 
 ![Main Screenshot](./public/images/image.png)
 ![Task Added](./public/images/images2.png)
+![Task Updating](./public/images/images5.png)
 ![Task Editing](./public/images/images3.png)
 ![Task Deleted](./public/images/images4.png)
 
