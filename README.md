@@ -8,7 +8,6 @@
 - Quasar CLI installed globally
   ```bash
   npm install -g @quasar/cli
-  🚀 How to Run
   ```
 
 1. Clone or download this repository / Or download the zip file
