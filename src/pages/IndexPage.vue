@@ -69,7 +69,7 @@ const addTask = async () => {
       isEditing: false,
     }
 
-    tasks.value.unshift(newTaskObj) 
+    tasks.value.unshift(newTaskObj)
     newTask.value = ''
 
     Notify.create({
@@ -107,27 +107,28 @@ const saveTask = async (task) => {
 
   try {
     // For tasks from the initial fetch (have real API IDs)
-    if (task.id <= 200) {  // JSONPlaceholder has 200 default todos
+    if (task.id <= 200) {
+      // JSONPlaceholder has 200 default todos
       await axios.put(`${API}/${task.id}`, {
         id: task.id,
         title: task.title,
-        completed: task.completed
+        completed: task.completed,
       })
     }
     // Always update local state regardless of API success
-    const taskIndex = tasks.value.findIndex(t => t.id === task.id)
+    const taskIndex = tasks.value.findIndex((t) => t.id === task.id)
     if (taskIndex !== -1) {
       tasks.value[taskIndex] = {
         ...task,
         title: task.title,
         isEditing: false,
-        originalTitle: task.title
+        originalTitle: task.title,
       }
     }
 
     Notify.create({
       type: 'positive',
-      message: 'Task updated successfully!'
+      message: 'Task updated successfully!',
     })
   } catch (error) {
     console.error('Update failed:', error)
@@ -136,7 +137,7 @@ const saveTask = async (task) => {
       task.title = task.originalTitle
       Notify.create({
         type: 'negative',
-        message: 'Failed to update task'
+        message: 'Failed to update task',
       })
     }
   } finally {
