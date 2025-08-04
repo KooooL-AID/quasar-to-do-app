@@ -45,7 +45,7 @@ Note: The API dont change anything the data will be back after refreshing your b
 ![Task Editing](./public/images/images3.png)
 ![Task Deleted](./public/images/images4.png)
 
-<video controls src="public/video/quasar-to-do-app-demo.mp4" title="Quasar to-do-app demo video"></video>
+<video controls src="./public/video/quasar-to-do-app-demo.mp4" title="Quasar to-do-app demo video"></video>
 
 ## Developed by:
 
