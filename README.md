@@ -39,7 +39,7 @@ Note: The API dont change anything the data will be back after refreshing your b
 
 ## Demo
 
-![Demo GIF](./public/images/demo.gif)
+![Demo GIF](./public/demo/demo-vid.gif)
 
 ## Images
 
